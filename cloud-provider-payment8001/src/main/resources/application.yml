@@ -19,4 +19,6 @@ eureka:
     register-with-eureka: true # 表示是否将自己注册进 eurekaServer 默认为 true
     fetch-registry: true # 是否从 eurekaServer 抓取已经有的注册信息，默认为 true
     service-url:
-      defaultZone: http://localhost:7001/eureka
+
+#      defaultZone: http://localhost:7001/eureka
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka # 集群版
