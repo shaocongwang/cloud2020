@@ -6,16 +6,6 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.utils.Bytes;
-import org.apache.kafka.streams.KafkaStreams;
-import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Materialized;
-import org.apache.kafka.streams.kstream.Produced;
-import org.apache.kafka.streams.state.KeyValueStore;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -27,7 +17,7 @@ public class CommonKafkaClientUtil {
 
     public static void main(String[] args) throws InterruptedException {
         Properties properties = new Properties();
-        properties.put("bootstrap.servers", "localhost:9092");
+        properties.put("bootstrap.servers", "192.168.136.128:9092");
         properties.put("group.id", "group-2");
         //session.timeout.ms：消费者在被认为死亡之前可以与服务器断开连接的时间，默认是3s 。
         properties.put("session.timeout.ms", "30000");
@@ -54,8 +44,8 @@ public class CommonKafkaClientUtil {
             try {
                 int index = 0;
                 while(true){
-                    Thread.sleep(1000);
-                    sendMessage("hello - " + index);
+                    Thread.sleep(3);
+                    sendMessage("This is the first thread send message, num  ==============> {\"name\":\"shaocongwang\",\"age\":31,\"birthday\":\"1989-07-18\",\"university\":\"zhengzhou University international college\",\"primaryschool\":\"yanglou primary school\",\"hobby\":[\"reading\",\"sports\",\"music\"],\"work\":\"program engeneerring\",\"hometown\":\"zhumadian_henan_china\",\"mobilephone\":\"18600681256\",\"email\":\"shaocongwang@126.com\",\"weight\":\"62kg\",\"height\":\"170cm\",\"address\":\"bai miao xi jie, bei qing lu, bei qi jia zhen, chang ping qu, bei jing shi\"} " + index);
                     //System.out.println("hello - " + index + "[send over] current time is [" + System.currentTimeMillis() + " ms]");
                     index ++;
                 }
@@ -68,8 +58,8 @@ public class CommonKafkaClientUtil {
             try {
                 int index = 0;
                 while(true){
-                    Thread.sleep(1000);
-                    sendMessage("world - " + index);
+                    Thread.sleep(3);
+                    sendMessage("shaocongwang's info is ---------------> {\"name\":\"shaocongwang\",\"age\":31,\"birthday\":\"1989-07-18\",\"university\":\"zhengzhou University international college\",\"primaryschool\":\"yanglou primary school\",\"hobby\":[\"reading\",\"sports\",\"music\"],\"work\":\"program engeneerring\",\"hometown\":\"zhumadian_henan_china\",\"mobilephone\":\"18600681256\",\"email\":\"shaocongwang@126.com\",\"weight\":\"62kg\",\"height\":\"170cm\",\"address\":\"bai miao xi jie, bei qing lu, bei qi jia zhen, chang ping qu, bei jing shi\"}" + index);
                     //System.out.println("world - " + index + "[send over] current time is [" + System.currentTimeMillis() + " ms]");
                     index ++;
                 }
@@ -81,7 +71,7 @@ public class CommonKafkaClientUtil {
         while (true) {
             ConsumerRecords<String, String> records = kafkaConsumer.poll(100);
             for (ConsumerRecord<String, String> record : records) {
-                System.out.printf("------------------------------------------------> offset = %d, value = %s", record.offset(), record.value());
+                System.out.printf("[offset:%d][value:%s]", record.offset(), record.value());
                 System.out.println();
             }
         }
@@ -91,12 +81,12 @@ public class CommonKafkaClientUtil {
     static {
         Properties properties = new Properties();
         //broker的地址清单，建议至少填写两个，避免宕机
-        properties.put("bootstrap.servers", "localhost:9092");
+        properties.put("bootstrap.servers", "192.168.136.128:9092");
         //acks指定必须有多少个分区副本接收消息，生产者才认为消息写入成功，用户检测数据丢失的可能性
         //acks=0：生产者在成功写入消息之前不会等待任何来自服务器的响应。无法监控数据是否发送成功，但可以以网络能够支持的最大速度发送消息，达到很高的吞吐量。
         //acks=1：只要集群的首领节点收到消息，生产者就会收到来自服务器的成功响应。
         //acks=all：只有所有参与复制的节点全部收到消息时，生产者才会收到来自服务器的成功响应。这种模式是最安全的，
-        properties.put("acks", "all");
+        properties.put("acks" , "all");
         //retries：生产者从服务器收到的错误有可能是临时性的错误的次数
         properties.put("retries", 0);
         //batch.size：该参数指定了一个批次可以使用的内存大小，按照字节数计算（而不是消息个数)。
