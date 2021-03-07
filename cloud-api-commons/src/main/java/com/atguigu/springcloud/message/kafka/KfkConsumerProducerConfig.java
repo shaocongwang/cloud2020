@@ -13,10 +13,8 @@ public class KfkConsumerProducerConfig {
 
 /********************************************* 公共性属性 STSRT **************************************************/
     //broker的地址清单，建议至少填写两个，避免宕机
-    private static final String BOOTSTRAP_SERVERS = "192.168.136.128:9092";
-    //key和value的序列化
-    private static final String key_serializer = "org.apache.kafka.common.serialization.StringSerializer";
-    private static final String value_serializer = "org.apache.kafka.common.serialization.StringSerializer";
+    private static final String BOOTSTRAP_SERVERS = "192.168.136.128:9092,192.168.136.129:9092,192.168.136.130:9092";
+
 /********************************************* 公共者属性 END ****************************************************/
 
     /********************************************* 生产者属性 STSRT **************************************************/
@@ -32,8 +30,10 @@ public class KfkConsumerProducerConfig {
     //earliest：在偏移量无效的情况下，消费者将从起始位置读取分区的记录。
     //latest：在偏移量无效的情况下，消费者将从最新位置读取分区的记录
     private static final String AUTO_OFFSET_RESET = "latest";
-    private static final String KEY_DESERIALIZER = "org.apache.kafka.common.serialization.StringDeserializer";
-    private static final String VALUE_DESERIALIZER = "org.apache.kafka.common.serialization.StringDeserializer";
+    //key和value的序列化
+    private static final String KEY_SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
+    private static final String VALUE_SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
+
     private static final String DESERIALIZER_ENCODING = "UTF8";
 
     // max.partition.fetch.bytes：服务器从每个分区里返回给消费者的最大字节数
@@ -59,6 +59,8 @@ public class KfkConsumerProducerConfig {
     private static final Integer LINGER_MS = 1;
     //buffer.memory该参数用来设置生产者内存缓冲区的大小，生产者用它缓冲要发送到服务器的消息。
     private static final Integer BUFFER_MEMORY = 33554432;
+    private static final String KEY_DESERIALIZER = "org.apache.kafka.common.serialization.StringDeserializer";
+    private static final String VALUE_DESERIALIZER = "org.apache.kafka.common.serialization.StringDeserializer";
     //compression.type:数据压缩格式，有snappy、gzip和lz4，snappy算法比较均衡，gzip会消耗更高的cpu，但压缩比更高
     //client.id：该参数可以是任意的字符串，服务器会用它来识别消息的来源。
     //max.in.flight.requests.per.connection：生产者在收到服务器晌应之前可以发送多少个消息。越大越占用内存，但会提高吞吐量
@@ -74,26 +76,27 @@ public class KfkConsumerProducerConfig {
      *
      */
     KFK_PRODUCER_PRO.put("bootstrap.servers", BOOTSTRAP_SERVERS);
-    KFK_PRODUCER_PRO.put("group.id", CONSUMER_GROUP_ID);
     KFK_PRODUCER_PRO.put("session.timeout.ms", SESSION_TIMEOUT_MS);
     KFK_PRODUCER_PRO.put("enable.auto.commit", ENABLE_AUTO_COMMIT);
     KFK_PRODUCER_PRO.put("auto.commit.interval.ms", AUTO_COMMIT_INTERVAL_MS);
     KFK_PRODUCER_PRO.put("auto.offset.reset", AUTO_OFFSET_RESET);
-    KFK_PRODUCER_PRO.put("key.deserializer", KEY_DESERIALIZER);
-    KFK_PRODUCER_PRO.put("value.deserializer", VALUE_DESERIALIZER);
+    KFK_PRODUCER_PRO.put("key.serializer", KEY_SERIALIZER);
+    KFK_PRODUCER_PRO.put("value.serializer", VALUE_SERIALIZER);
     KFK_PRODUCER_PRO.put("deserializer.encoding", DESERIALIZER_ENCODING);
 
     /**
      *
      */
     KFK_CONSUMER_PRO.put("bootstrap.servers", BOOTSTRAP_SERVERS);
+    KFK_CONSUMER_PRO.put("group.id", CONSUMER_GROUP_ID);
     KFK_CONSUMER_PRO.put("acks", ACKS);
     KFK_CONSUMER_PRO.put("retries", RETRIES);
     KFK_CONSUMER_PRO.put("batch.size", BATCH_SIZE);
     KFK_CONSUMER_PRO.put("linger.ms", LINGER_MS);
     KFK_CONSUMER_PRO.put("buffer.memory", BUFFER_MEMORY);
-    KFK_CONSUMER_PRO.put("key.serializer", VALUE_DESERIALIZER);
-    KFK_CONSUMER_PRO.put("value.serializer", DESERIALIZER_ENCODING);
+    KFK_CONSUMER_PRO.put("key.deserializer", KEY_DESERIALIZER);
+    KFK_CONSUMER_PRO.put("value.deserializer", VALUE_DESERIALIZER);
+    KFK_CONSUMER_PRO.put("value.  ", VALUE_DESERIALIZER);
 }
 
     /***
